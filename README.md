@@ -19,8 +19,7 @@ Nearby Eats Agent is a WebUI plugin that integrates AI-powered restaurant recomm
 nearby-eats-ai/
 ├── 📁 clients/                      
 │   ├── limClient.py              # lab ollama API client
-│   └──  mapsClient.py            # Google Maps API client
-├── 📁 routes/                 
+│   └──  mapsClient.py            # Google Maps API client               
 ├── .env                          # Environment variables
 ├── app.py                        # FastAPI main application
 ├── cache.db                      # SQLite cache database
