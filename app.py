@@ -1,3 +1,5 @@
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 from fastapi import FastAPI, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -48,8 +50,11 @@ async def root():
 async def get_recommendation(request: Request, background_tasks: BackgroundTasks):
     """取得推薦"""
     
+    keywords = recommender._extract_keywords(request.question)
+    search_keyword = keywords[0] if keywords else "餐廳"
+    
     # 檢查快取
-    cached_result = recommender.cache.get(request.question, request.location)
+    cached_result = recommender.cache.get(search_keyword, request.location)
     if cached_result:
         print(f"📦 使用快取結果")
         # 檢查快取內容是否足夠詳細
@@ -65,7 +70,7 @@ async def get_recommendation(request: Request, background_tasks: BackgroundTasks
             
             # 取得推薦
             result = await recommender.get_recommendation(
-                request.question,
+                search_keyword,
                 request.location,
                 request.radius,
                 request.max_results
@@ -74,7 +79,7 @@ async def get_recommendation(request: Request, background_tasks: BackgroundTasks
             # 儲存到快取
             background_tasks.add_task(
                 recommender.cache.set,
-                request.question,
+                search_keyword,
                 request.location,
                 result
             )
@@ -104,8 +109,11 @@ async def get_recommendation_full(request: Request, background_tasks: Background
     print(f"🌐 WebUI 專用請求: {request.question}")
     print(f"="*60)
     
+    keywords = recommender._extract_keywords(request.question)
+    search_keyword = keywords[0] if keywords else "餐廳"
+    
     # 檢查快取
-    cached_result = recommender.cache.get(request.question, request.location)
+    cached_result = recommender.cache.get(search_keyword, request.location)
     
     # 強制重新取得，確保內容完整
     if cached_result:
@@ -126,7 +134,7 @@ async def get_recommendation_full(request: Request, background_tasks: Background
             
             # 取得推薦
             result = await recommender.get_recommendation(
-                request.question,
+                search_keyword,
                 request.location,
                 request.radius,
                 request.max_results
@@ -135,7 +143,7 @@ async def get_recommendation_full(request: Request, background_tasks: Background
             # 儲存到快取
             background_tasks.add_task(
                 recommender.cache.set,
-                request.question,
+                search_keyword,
                 request.location,
                 result
             )
