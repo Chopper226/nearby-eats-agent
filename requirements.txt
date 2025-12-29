@@ -11,9 +11,6 @@ pydantic-settings==2.1.0
 requests==2.31.0
 httpx==0.25.1
 
-# Database & Cache
-sqlite3  # Python built-in, no need to install
-
 # Environment Management
 python-dotenv==1.0.0
 
