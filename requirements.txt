@@ -1,0 +1,26 @@
+# FastAPI & Web Framework
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+python-multipart==0.0.6
+
+# Data Validation & Serialization
+pydantic==2.5.0
+pydantic-settings==2.1.0
+
+# HTTP Requests
+requests==2.31.0
+httpx==0.25.1
+
+# Database & Cache
+sqlite3  # Python built-in, no need to install
+
+# Environment Management
+python-dotenv==1.0.0
+
+# Security
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+
+# Optional: Enhanced Features
+aiofiles==23.2.1  # Async file handling
+tenacity==8.2.3   # Retry logic for API calls
